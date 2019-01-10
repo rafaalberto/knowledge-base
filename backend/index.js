@@ -1,8 +1,15 @@
-const express = require('express')();
+const app = require('express')();
+const consign = require('consign');
+const db = require('./config/db');
 
-express.get('/', (req, res) => {
-    res.send('<h2>Hello Node.js</h2>');
-});
+app.db = db;
 
-const port = 2000;
-express.listen(port, ()=> console.log(`Listening on port ${port}`));
+consign()
+    .then('./config/middlewares.js')
+    .then('./api/validation.js')
+    .then('./api')
+    .then('./config/routes.js')
+    .into(app);
+
+const port = 3000;
+app.listen(port, ()=> console.log(`Listening on port ${port}`));
