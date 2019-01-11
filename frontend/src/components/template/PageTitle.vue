@@ -1,9 +1,8 @@
 <template>
     <div class="page-title">
-        <h1><i v-if="icon" :class="icon"> {{ main }} </i></h1>
-        <h2>{{ sub }}</h2>
+        <h2><i v-if="icon" :class="icon"> {{ main }} </i></h2>
+        <h3>{{ sub }}</h3>
         <hr>
-
     </div>
 </template>
 
@@ -15,10 +14,10 @@ export default {
 </script>
 
 <style>
-    .page-title h1 {
+    .page-title h2 {
         margin: 0px;
     }
-    .page-title h2 {
+    .page-title h3 {
         color: #777;
         margin-top: 5px;
         font-size: 1.3rem;
