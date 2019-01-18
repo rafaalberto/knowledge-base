@@ -11,18 +11,39 @@
                 </b-col>
                 <b-col md="6" sm="12">
                     <b-form-group label="E-mail:" label-for="email">
-                        <b-form-input id="email" type="text" v-model="user.name"
+                        <b-form-input id="email" type="text" v-model="user.email"
                             placeholder="Informe o e-mail do usuário" required />
                     </b-form-group>
                 </b-col>
             </b-row>
+            <b-form-checkbox id="admin" v-model="user.admin" class="mt-3 mb-3">
+                Administrador
+            </b-form-checkbox>
+            <b-row>
+                <b-col md="6" sm="12">
+                    <b-form-group label="Senha:" label-for="password">
+                        <b-form-input id="password" type="password" v-model="user.password"
+                            placeholder="Informe a senha do usuário" required />
+                    </b-form-group>
+                </b-col>
+                <b-col md="6" sm="12">
+                    <b-form-group label="Confirmação de senha:" label-for="confirm-password">
+                        <b-form-input id="confirm-password" type="password" v-model="user.confirmPassword"
+                            placeholder="Confirme a senha do usuário" required />
+                    </b-form-group>
+                </b-col>
+            </b-row>
+            <b-button variant="primary" v-if="mode == 'save'" @click="save">Salvar</b-button>
+            <b-button variant="danger" v-if="mode == 'remove'" @click="remove">Excluir</b-button>
+            <b-button class="ml-2" @click="reset">Cancelar</b-button>
         </b-form>
+        <hr>
         <b-table hover striped :items="users" :fields="fields"></b-table>
     </div>
 </template>
 
 <script>
-import { baseApiUrl } from '@/global'
+import { baseApiUrl, showError } from '@/global'
 import axios from 'axios'
 
 export default {
@@ -48,6 +69,29 @@ export default {
             axios.get(url).then(res => {
                 this.users = res.data
             })
+        },
+        reset() {
+            this.mode = 'save'
+            this.user = {}
+            this.loadUsers()
+        },
+        save() {
+            const method = this.user.id ? 'put' : 'post'
+            const id = this.user.id ? `/${this.user.id}` : ''
+            axios[method](`${baseApiUrl}/users/${id}`, this.user)
+                .then(() => {
+                    //this.$toasted.global.default.success()
+                    this.reset()
+                })
+                .catch(showError)
+        },
+        remove() {
+            const id = this.user.id
+            axios.delete(`${baseApiUrl}/users/${id}`)
+                .then(() => {
+                    //this.$toasted.global.default.success()
+                    this.reset()
+                }).catch(showError)
         }
     },
     mounted() {
@@ -57,5 +101,7 @@ export default {
 </script>
 
 <style>
-
+    .btn {
+        width: 100px;
+    }
 </style>
