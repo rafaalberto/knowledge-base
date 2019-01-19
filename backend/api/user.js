@@ -68,5 +68,12 @@ module.exports = app => {
             .catch(err => res.status(500).send(err))
     }
 
-    return { save, get, getById, count };
+    const remove = async (req, res) => {
+        const user = await app.db('users').where({ id: req.params.id })
+        .del()
+        .then(_ => res.status(204).send())
+        .catch(err => res.status(500).send(err))
+    }
+
+    return { save, get, getById, count, remove };
 }
