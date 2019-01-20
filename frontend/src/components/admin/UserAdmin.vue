@@ -119,7 +119,5 @@ export default {
 </script>
 
 <style>
-    /* .btn {
-        width: 100px;
-    } */
+    
 </style>
