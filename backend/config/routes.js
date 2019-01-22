@@ -9,9 +9,6 @@ module.exports = app => {
         .get(app.api.user.getById)
         .delete(app.api.user.remove)
 
-    app.route('/users-count')
-        .get(app.api.user.count)
-
     app.route('/categories')
         .post(app.api.category.save)
         .get(app.api.category.get)
@@ -30,5 +27,8 @@ module.exports = app => {
         .put(app.api.article.save)
         .delete(app.api.article.remove)
         .get(app.api.article.getById)
+
+    app.route('/statistics')
+        .get(app.api.statistic.get)
 
 }
