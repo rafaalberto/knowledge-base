@@ -1,7 +1,7 @@
 module.exports = app => {
     const { existsOrError, notExistsOrError } = app.api.validation
 
-    const save = async (req, res) => {
+    const save = (req, res) => {
         const article = { ...req.body }
         if(req.params.id) article.id = req.params.id
 
@@ -24,8 +24,8 @@ module.exports = app => {
         } else {
             app.db('articles')
                 .insert(article)
-                .then(_ => res.status(201).send()
-                .catch(err => res.status(500).send(err)))  
+                .then(_ => res.status(204).send())
+                .catch(err => res.status(500).send(err))
         }
     }
 
@@ -34,17 +34,17 @@ module.exports = app => {
             const rowsDeleted = await app.db('articles')
                 .where({ id: req.params.id }).del()
             try {
-                notExistsOrError(rowsDeleted, 'Artigo não foi encontrado')
+                existsOrError(rowsDeleted, 'Artigo não foi encontrado.')
             } catch(msg) {
-                return res.status(400).send(msg)
+                return res.status(400).send(msg)    
             }
             res.status(204).send()
-        } catch( msg ) {
+        } catch(msg) {
             res.status(500).send(msg)
         }
     }
 
-    const limit = 10
+    const limit = 5
     const get = async (req, res) => {
         const page = req.query.page || 1
         const result = await app.db('articles').count('id').first()
@@ -62,6 +62,7 @@ module.exports = app => {
             .where({ id: req.params.id }).first()
             .then(article => {
                 article.content = article.content.toString()
+                return res.json(article)
             })
             .catch(err => res.status(500).send(err))
     }
