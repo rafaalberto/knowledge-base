@@ -1,34 +1,46 @@
+const admin = require('./admin')
 
 module.exports = app => {
+
+    app.post('/signup', app.api.user.save)
+    app.post('/signin', app.api.auth.signin)
+    app.post('/validateToken', app.api.auth.validateToken)
+
     app.route('/users')
-        .post(app.api.user.save)
-        .get(app.api.user.get)
+        .all(app.config.passport.authenticate())
+        .post(admin(app.api.user.save))
+        .get(admin(app.api.user.get))
     
     app.route('/users/:id')
-        .put(app.api.user.save)
-        .get(app.api.user.getById)
-        .delete(app.api.user.remove)
+        .all(app.config.passport.authenticate())
+        .put(admin(app.api.user.save))
+        .get(admin(app.api.user.getById))
+        .delete(admin(app.api.user.remove))
 
     app.route('/categories')
-        .post(app.api.category.save)
-        .get(app.api.category.get)
+        .all(app.config.passport.authenticate())
+        .get(admin(app.api.category.get))
+        .post(admin(app.api.category.save))
 
     app.route('/categories/:id')
-        .put(app.api.category.save)
+        .all(app.config.passport.authenticate())
         .get(app.api.category.getById)
-        .delete(app.api.category.remove)
-
+        .put(admin(app.api.category.save))
+        .delete(admin(app.api.category.remove))
 
     app.route('/articles')
-        .post(app.api.article.save)
-        .get(app.api.article.get)
+        .all(app.config.passport.authenticate())
+        .post(admin(app.api.article.save))
+        .get(admin(app.api.article.get))
         
     app.route('/articles/:id')
-        .put(app.api.article.save)
-        .delete(app.api.article.remove)
+        .all(app.config.passport.authenticate())
+        .put(admin(app.api.article.save))
+        .delete(admin(app.api.article.remove))
         .get(app.api.article.getById)
 
     app.route('/statistics')
+        .all(app.config.passport.authenticate())
         .get(app.api.statistic.get)
 
 }
