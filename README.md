@@ -1,6 +1,6 @@
 # Knowledge base (Udemy Course)
 This application were built in two parts: Backend app (Nodejs) and Frontend app(Vuejs) <br/>
-The APP consists in saving and listing data about courses and articles for example. <br/>
+The App consists in saving and listing data about courses and articles for example. <br/>
 The main technologies learnt were: <br/>
 
 - NodeJS (Javascript as a backend app)
